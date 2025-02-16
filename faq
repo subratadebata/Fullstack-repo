@@ -54,3 +54,89 @@ spec:
             name: web-service
             port:
               number: 80
+
+
+hread-Safety of ConcurrentHashMap, Hashtable, and SynchronizedMap
+All three are thread-safe, but they achieve it in different ways:
+
+Feature	ConcurrentHashMap 🟢	Hashtable 🔵	Collections.synchronizedMap() 🟡
+Thread-Safe?	✅ Yes	✅ Yes	✅ Yes
+Locking Mechanism	Segmented Locking (locks only parts of the map)	Synchronized Methods (locks the entire table)	Synchronized Wrapper (locks the entire map)
+Performance	🔥 High (better concurrency)	🐢 Slow (locks everything)	🐢 Slow (locks everything)
+Concurrent Reads?	✅ Yes (reads do not block)	❌ No (reads are synchronized)	❌ No (reads are synchronized)
+Concurrent Writes?	✅ Yes (writes only lock specific buckets)	❌ No (locks entire table)	❌ No (locks entire map)
+Iteration Behavior	✅ Fail-Fast (ConcurrentModificationException)	❌ Uses Enumeration (Safe)	✅ Fail-Fast (ConcurrentModificationException)
+Which One is Best for Thread Safety?
+✔ Use ConcurrentHashMap if you need high performance in a multi-threaded environment.
+✔ Use Hashtable only for legacy code (it's fully synchronized but slow).
+✔ Use Collections.synchronizedMap() if you need a quick thread-safe wrapper for a HashMap but don’t need high concurrency.
+
+Combining Results from Multiple Sources Using CompletableFuture in Java
+CompletableFuture is a powerful tool for handling asynchronous computations in Java. You can combine results from multiple sources using:
+
+thenCombine() → Combine results of two futures.
+thenCompose() → Chain dependent tasks.
+allOf() → Combine multiple futures and wait for all.
+anyOf() → Return the result of the fastest future.
+1️⃣ Using thenCombine() – Combining Two Results
+If you have two independent computations and want to combine their results, use thenCombine().
+
+
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+
+public class CombineFuturesExample {
+    public static void main(String[] args) throws ExecutionException, InterruptedException {
+        CompletableFuture<Integer> future1 = CompletableFuture.supplyAsync(() -> 10);
+        CompletableFuture<Integer> future2 = CompletableFuture.supplyAsync(() -> 20);
+
+        CompletableFuture<Integer> result = future1.thenCombine(future2, (a, b) -> a + b);
+
+        System.out.println("Combined Result: " + result.get()); // Output: 30
+    }
+}
+✅ Use Case: When two independent tasks finish and you need their combined result.
+2️⃣ Using thenCompose() – Dependent Tasks
+If one computation depends on the result of another, use thenCompose().
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+
+public class ThenComposeExample {
+    public static void main(String[] args) throws ExecutionException, InterruptedException {
+        CompletableFuture<String> future = CompletableFuture.supplyAsync(() -> "Hello")
+                .thenCompose(s -> CompletableFuture.supplyAsync(() -> s + " World"));
+
+        System.out.println(future.get()); // Output: Hello World
+    }
+}
+
+Use Case: When a second task depends on the result of the first.
+
+3️⃣ Using allOf() – Combining Multiple Futures
+If you have multiple independent tasks and want to wait for all of them to complete:
+import java.util.concurrent.*;
+
+public class AllOfExample {
+    public static void main(String[] args) throws ExecutionException, InterruptedException {
+        CompletableFuture<Integer> future1 = CompletableFuture.supplyAsync(() -> 10);
+        CompletableFuture<Integer> future2 = CompletableFuture.supplyAsync(() -> 20);
+        CompletableFuture<Integer> future3 = CompletableFuture.supplyAsync(() -> 30);
+
+        CompletableFuture<Void> allFutures = CompletableFuture.allOf(future1, future2, future3);
+
+        allFutures.get(); // Wait for all to complete
+
+        int sum = future1.get() + future2.get() + future3.get();
+        System.out.println("Total Sum: " + sum); // Output: 60
+    }
+}
+Use Case: When you want to wait for all tasks but don’t need a combined result.
+4️⃣ Using anyOf() – Return the First Completed Result
+If you want to return the first completed result (fastest future):
+
+Method	Purpose
+thenCombine()	Combine results of two independent futures.
+thenCompose()	Chain dependent computations.
+allOf()	Wait for all tasks but doesn’t return combined results.
+anyOf()	Return the first completed task’s result.
+
