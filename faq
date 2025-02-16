@@ -139,4 +139,88 @@ thenCombine()	Combine results of two independent futures.
 thenCompose()	Chain dependent computations.
 allOf()	Wait for all tasks but doesn’t return combined results.
 anyOf()	Return the first completed task’s result.
+How do you implement timeout using CompletableFuture?
+1️⃣ Using orTimeout() (Java 9+)
+The simplest approach, available in Java 9+.
+Automatically fails the future with a TimeoutException if it exceeds the given time.
+import java.util.concurrent.*;
 
+public class CompletableFutureTimeoutExample {
+    public static void main(String[] args) {
+        CompletableFuture<String> future = CompletableFuture.supplyAsync(() -> {
+            sleep(3); // Simulate delay
+            return "Task Completed";
+        }).orTimeout(2, TimeUnit.SECONDS); // Timeout after 2 sec
+
+        try {
+            System.out.println(future.get()); // Throws TimeoutException
+        } catch (Exception e) {
+            System.out.println("Exception: " + e); // Output: java.util.concurrent.TimeoutException
+        }
+    }
+
+    private static void sleep(int sec) {
+        try { Thread.sleep(sec * 1000); } catch (InterruptedException e) { e.printStackTrace(); }
+    }
+}
+ Best for: Simple timeout handling when using Java 9+.
+2️⃣ Using completeOnTimeout() (Java 9+)
+Instead of throwing an exception, it returns a default value when the timeout occurs.
+
+import java.util.concurrent.*;
+
+public class CompleteOnTimeoutExample {
+    public static void main(String[] args) {
+        CompletableFuture<String> future = CompletableFuture.supplyAsync(() -> {
+            sleep(3); // Simulate delay
+            return "Task Completed";
+        }).completeOnTimeout("Default Value", 2, TimeUnit.SECONDS); // Return default after 2 sec
+
+        try {
+            System.out.println(future.get()); // Output: Default Value
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void sleep(int sec) {
+        try { Thread.sleep(sec * 1000); } catch (InterruptedException e) { e.printStackTrace(); }
+    }
+}
+ Best for: Returning a default value instead of throwing an exception.
+import java.util.concurrent.*;
+
+public class TimeoutWithExecutor {
+    public static void main(String[] args) {
+        ExecutorService executor = Executors.newScheduledThreadPool(1);
+
+        CompletableFuture<String> future = CompletableFuture.supplyAsync(() -> {
+            sleep(3); // Simulate long task
+            return "Task Completed";
+        });
+
+        CompletableFuture<String> timeoutFuture = new CompletableFuture<>();
+        executor.schedule(() -> timeoutFuture.completeExceptionally(new TimeoutException()), 2, TimeUnit.SECONDS);
+
+        CompletableFuture<String> result = future.applyToEither(timeoutFuture, res -> res);
+
+        try {
+            System.out.println(result.get()); // Throws TimeoutException
+        } catch (Exception e) {
+            System.out.println("Exception: " + e);
+        } finally {
+            executor.shutdown();
+        }
+    }
+
+    private static void sleep(int sec) {
+        try { Thread.sleep(sec * 1000); } catch (InterruptedException e) { e.printStackTrace(); }
+    }
+}
+
+ Best for: Java 8 compatibility (alternative to orTimeout()).
+
+Method	Available Since	Behavior
+orTimeout()	Java 9+	Throws TimeoutException if it exceeds the time limit.
+completeOnTimeout()	Java 9+	Returns a default value instead of throwing an exception.
+applyToEither() + ScheduledExecutorService	Java 8	Uses an external scheduler to manually handle timeouts.
