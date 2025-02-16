@@ -1,1 +1,56 @@
+What is Var,let and const ?
+ What?
+ var → Function-scoped, hoisted, can be re-declared and reassigned.
+ let → Block-scoped, hoisted but not initialized, can be reassigned but not re-declared.
+ const → Block-scoped, must be initialized, cannot be reassigned or re-declared.
+let
+let age = 25;
+age = 26;  
+console.log(age); 
+const
+const name = "Alice";
+name = "Bob";  
+var
+console.log(a);
+var a = 10;
 
+console.log(b); 
+let b = 20;
+🔹 Best Practice
+✅ Use const by default.
+✅ Use let when reassignment is needed.
+✅ Avoid var due to scoping issues.
+What is ingress.yml?
+
+An ingress.yml file defines Ingress resources in Kubernetes, which control how external traffic reaches services inside a Kubernetes cluster.
+It acts as a smart router, directing HTTP/HTTPS traffic based on rules.
+Use ingress.yml when:
+✔ You need to expose multiple services under a single domain.
+✔ You want path-based or host-based routing (e.g., /api → Service A, /app → Service B).
+✔ You require TLS/SSL termination for secure connections.
+✔ You want to avoid exposing multiple LoadBalancers (cost-efficient).
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: my-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: myapp.example.com  # Domain name
+    http:
+      paths:
+      - path: /api
+        pathType: Prefix
+        backend:
+          service:
+            name: api-service
+            port:
+              number: 80
+      - path: /web
+        pathType: Prefix
+        backend:
+          service:
+            name: web-service
+            port:
+              number: 80
