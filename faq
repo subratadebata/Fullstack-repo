@@ -224,3 +224,48 @@ Method	Available Since	Behavior
 orTimeout()	Java 9+	Throws TimeoutException if it exceeds the time limit.
 completeOnTimeout()	Java 9+	Returns a default value instead of throwing an exception.
 applyToEither() + ScheduledExecutorService	Java 8	Uses an external scheduler to manually handle timeouts.
+import java.util.concurrent.*;
+import java.net.*;
+import java.io.*;
+
+public class APICallTimeoutJava8 {
+    public static void main(String[] args) {
+        ExecutorService scheduler = Executors.newScheduledThreadPool(1);
+
+        CompletableFuture<String> apiFuture = CompletableFuture.supplyAsync(() -> makeAPICall());
+
+        // Create a timeout future
+        CompletableFuture<String> timeoutFuture = new CompletableFuture<>();
+        scheduler.schedule(() -> timeoutFuture.complete("Timeout: No API Response"), 2, TimeUnit.SECONDS);
+
+        // Use applyToEither to take whichever completes first
+        CompletableFuture<String> finalFuture = apiFuture.applyToEither(timeoutFuture, response -> response);
+
+        try {
+            System.out.println("API Response: " + finalFuture.get());
+        } catch (Exception e) {
+            System.out.println("API Call Failed: " + e);
+        } finally {
+            scheduler.shutdown();
+        }
+    }
+
+    private static String makeAPICall() {
+        try {
+            // Simulate API delay of 3 seconds
+            Thread.sleep(3000);
+            URL url = new URL("https://jsonplaceholder.typicode.com/todos/1");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            return reader.readLine();
+        } catch (Exception e) {
+            return "Error calling API: " + e.getMessage();
+        }
+    }
+}
+Use Future when:
+✅ You need to run a task asynchronously without blocking the main thread.
+✅ You need a handle to track the execution of an async operation.
+✅ You might want to cancel a long-running task.
