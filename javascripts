@@ -145,3 +145,20 @@ Conclusion
 Garbage Collection improves memory management in Java.
 Different GC algorithms cater to different application needs.
 G1 GC is the default in Java 9+, but ZGC and Shenandoah offer better performance for low-latency applications.
+┌──────────────────────────────┐
+│           JVM Memory         │
+├──────────────────────────────┤
+│    Method Area (Metaspace)   │  <-- Class Metadata, Static Variables
+├──────────────────────────────┤
+│           Heap               │
+│  ┌──────────┬──────────────┐ │
+│  │  Young   │    Old       │ │
+│  │(Eden, S0, S1) | Tenured │ │
+│  └──────────┴──────────────┘ │
+├──────────────────────────────┤
+│      Stack (Each Thread)     │  <-- Method Call Stack, Local Variables
+├──────────────────────────────┤
+│  Native Method Stack (JNI)   │  <-- Calls Native C/C++ Methods
+├──────────────────────────────┤
+│      Program Counter (PC)    │  <-- Current Execution Line
+└──────────────────────────────┘
