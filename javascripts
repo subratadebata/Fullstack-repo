@@ -29,3 +29,5 @@ Callbacks, Promises, and Async/Await
 Callbacks: Functions passed as arguments to be executed later.
 Promises: Objects that represent future values (Pending, Fulfilled, Rejected).
 Async/Await: Modern syntax for handling Promises.
+ Destructuring
+A way to extract values from arrays or objects.
