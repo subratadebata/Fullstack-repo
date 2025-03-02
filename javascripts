@@ -43,3 +43,105 @@ When state changes, React creates a new Virtual DOM.
 React compares the new Virtual DOM with the previous one using a process called Reconciliation.
 React determines the minimal changes (diffing algorithm) and updates only the necessary parts in the real DOM.
 The Real DOM is updated efficiently, improving performance.
+1. Types of Garbage Collectors in Java
+Java provides multiple garbage collectors, each optimized for different performance requirements.
+
+Garbage Collector	Algorithm Type	Best For
+Serial GC	Stop-the-world, Mark-Sweep-Compact	Single-threaded environments
+Parallel GC (Throughput GC)	Multi-threaded, Mark-Sweep-Compact	High throughput, multi-core systems
+CMS (Concurrent Mark-Sweep) GC	Concurrent, Mark-Sweep	Low-latency applications
+G1 (Garbage First) GC	Region-based, Concurrent	Balanced performance for large heaps
+ZGC	Region-based, Low-latency	Very low pause times for large heaps
+Shenandoah GC	Region-based, Concurrent	Extremely low pause times, multi-threaded
+2. Java Memory Structure for GC
+Java Heap Memory is divided into different regions:
+
+Young Generation (Eden + Survivor Spaces)
+Newly created objects.
+Minor GC collects short-lived objects.
+Old Generation (Tenured)
+Long-lived objects that survive multiple GCs.
+Major GC (Full GC) occurs here.
+Metaspace
+Stores class metadata (replaces PermGen in Java 8+).
+3. Garbage Collection Algorithms
+1️⃣ Serial Garbage Collector
+Uses a single thread for GC.
+Stop-the-world event pauses all application threads.
+Suitable for small Java applications with a single-core CPU.
+JVM Option: -XX:+UseSerialGC
+🔹 Algorithm:
+
+Mark – Identifies live objects.
+Sweep – Removes dead objects.
+Compact – Defragments memory to reduce fragmentation.
+2️⃣ Parallel Garbage Collector (Throughput GC)
+Uses multiple threads for GC.
+Still causes stop-the-world pauses.
+Suitable for applications with high CPU power and large heaps.
+JVM Option: -XX:+UseParallelGC
+🔹 Algorithm:
+
+Parallel Minor GC for Young Generation.
+Parallel Major GC (Full GC) for Old Generation.
+3️⃣ CMS (Concurrent Mark-Sweep) Garbage Collector (Deprecated in Java 14)
+Reduces pause times by running concurrent threads for GC.
+Best for low-latency applications.
+JVM Option: -XX:+UseConcMarkSweepGC
+🔹 Algorithm Steps:
+
+Initial Mark – Stops the application briefly to mark live objects.
+Concurrent Mark – Runs concurrently with application.
+Concurrent Sweep – Frees unused objects.
+Final Remark – Stops application briefly to finalize GC.
+❗ Downsides:
+
+Can cause fragmentation.
+More CPU-intensive.
+4️⃣ G1 (Garbage First) Garbage Collector (Default in Java 9+)
+Region-based collector (instead of generational model).
+Prioritizes regions with the most garbage.
+JVM Option: -XX:+UseG1GC
+🔹 Algorithm Steps:
+
+Initial Mark – Quick scan of heap.
+Concurrent Marking – Runs in the background.
+Evacuation Pause – Moves objects to compact memory.
+Cleanup – Removes unused regions.
+✅ Advantages:
+
+Balanced performance.
+Low pause times.
+5️⃣ ZGC (Low-Latency GC)
+Ultra-low pause times (<10ms), even with large heaps (up to 16TB).
+JVM Option: -XX:+UseZGC
+🔹 Key Features:
+
+Fully concurrent – GC runs alongside application.
+Does not stop application threads.
+6️⃣ Shenandoah GC
+Similar to ZGC, with even shorter pause times.
+JVM Option: -XX:+UseShenandoahGC
+🔹 Key Features:
+
+Concurrent Compaction – Avoids full GC pauses.
+Suitable for high-throughput, low-latency applications.
+4. Choosing the Right Garbage Collector
+Application Type	Best GC Choice
+Small applications, single-threaded	Serial GC
+Large-scale, CPU-intensive	Parallel GC
+Low-latency apps	CMS (deprecated) / G1 GC
+Ultra-low latency, large heap	ZGC / Shenandoah
+5. How to Set GC in JVM
+You can specify the garbage collector in your JVM options:
+
+bash
+Copy
+Edit
+java -XX:+UseG1GC -jar MyApp.jar  # Use G1 GC
+java -XX:+UseParallelGC -jar MyApp.jar  # Use Parallel GC
+java -XX:+UseZGC -jar MyApp.jar  # Use ZGC
+Conclusion
+Garbage Collection improves memory management in Java.
+Different GC algorithms cater to different application needs.
+G1 GC is the default in Java 9+, but ZGC and Shenandoah offer better performance for low-latency applications.
