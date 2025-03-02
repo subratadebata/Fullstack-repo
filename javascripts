@@ -12,3 +12,20 @@ Execution Process:
 Synchronous code executes first (Call Stack).
 Promises and async/await go into the Microtask Queue (higher priority than Callback Queue).
 Callbacks from events, timers, or async operations go into the Callback Queue.
+Hoisting
+Hoisting is JavaScript’s behavior of moving variable and function declarations to the top of their scope before execution.
+Scope and Lexical Scope
+Scope determines where a variable can be accessed.
+Lexical Scope refers to how nested functions inherit variables from their parent functions.
+this Keyword
+The this keyword refers to the object that is executing the function.
+
+Rules for this:
+Global Scope (Non-strict Mode): this refers to window in browsers.
+Inside an Object Method: this refers to the object.
+Arrow Functions: this is lexically bound (does not get its own this).
+Inside a Constructor Function: this refers to the new instance.
+Callbacks, Promises, and Async/Await
+Callbacks: Functions passed as arguments to be executed later.
+Promises: Objects that represent future values (Pending, Fulfilled, Rejected).
+Async/Await: Modern syntax for handling Promises.
