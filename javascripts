@@ -31,3 +31,15 @@ Promises: Objects that represent future values (Pending, Fulfilled, Rejected).
 Async/Await: Modern syntax for handling Promises.
  Destructuring
 A way to extract values from arrays or objects.
+Debouncing and Throttling
+Debouncing: Delays execution until after a pause.
+Throttling: Limits execution at fixed intervals.
+What is the Virtual DOM in React?
+The Virtual DOM (VDOM) is a lightweight, in-memory representation of the real DOM used by React to optimize UI rendering and updates efficiently.
+
+How the Virtual DOM Works?
+React creates a Virtual DOM tree that mirrors the actual DOM.
+When state changes, React creates a new Virtual DOM.
+React compares the new Virtual DOM with the previous one using a process called Reconciliation.
+React determines the minimal changes (diffing algorithm) and updates only the necessary parts in the real DOM.
+The Real DOM is updated efficiently, improving performance.
