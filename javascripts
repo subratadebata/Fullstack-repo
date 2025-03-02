@@ -162,3 +162,124 @@ G1 GC is the default in Java 9+, but ZGC and Shenandoah offer better performance
 ├──────────────────────────────┤
 │      Program Counter (PC)    │  <-- Current Execution Line
 └──────────────────────────────┘
+
+1. Types of Garbage Collectors in Java
+Java provides multiple garbage collection algorithms, each with trade-offs in throughput, latency, and pause times.
+
+Garbage Collector	Best For	GC Type	JVM Option
+Serial GC	Small apps, single-threaded environments	Stop-the-world, single-threaded	-XX:+UseSerialGC
+Parallel GC (Throughput GC)	High throughput, multi-threaded apps	Stop-the-world, multi-threaded	-XX:+UseParallelGC
+G1 GC (Garbage First)	Low-latency, balanced apps	Region-based, concurrent	-XX:+UseG1GC
+ZGC (Z Garbage Collector)	Ultra-low-latency, large heaps	Region-based, concurrent	-XX:+UseZGC
+Shenandoah GC	Low-pause, real-time systems	Region-based, concurrent	-XX:+UseShenandoahGC
+2. How Different Java GC Algorithms Work
+🔹 Serial GC (Best for Small Applications)
+Uses a single thread for garbage collection.
+Performs stop-the-world (STW) pauses.
+Suitable for small heap sizes (<1GB).
+🔹 Enable Serial GC
+
+bash
+Copy
+Edit
+java -XX:+UseSerialGC -jar app.jar
+🔹 How It Works
+
+Stops all application threads during GC.
+Runs Minor GC (Young Gen) and Major GC (Old Gen) sequentially.
+Causes long pause times, so not suitable for large applications.
+🔹 Parallel GC (Best for High Throughput)
+Uses multiple threads to perform GC.
+Focuses on throughput (faster execution, longer pauses).
+Still performs stop-the-world but faster than Serial GC.
+🔹 Enable Parallel GC
+
+bash
+Copy
+Edit
+java -XX:+UseParallelGC -jar app.jar
+🔹 How It Works
+
+Uses multiple threads to clean Young Gen.
+Uses multiple threads for Full GC but still pauses the application.
+Best for batch processing systems where pauses don’t matter.
+🔹 G1 Garbage Collector (Best for Balanced Performance)
+Divides heap into regions (Eden, Survivor, Old) instead of fixed generations.
+Performs concurrent garbage collection, reducing pause times.
+Prioritizes collecting regions with most garbage first.
+🔹 Enable G1 GC
+
+bash
+Copy
+Edit
+java -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -jar app.jar
+🔹 How It Works
+
+Divides heap into regions (instead of separate Young & Old Gen).
+Performs concurrent marking to identify garbage-heavy regions.
+Collects garbage from the most-filled regions first.
+Avoids long Full GC pauses, making it ideal for low-latency applications.
+✅ Used as the default GC from Java 9+.
+✅ Best choice for most applications.
+
+🔹 Z Garbage Collector (ZGC) – Best for Ultra-Low Latency
+Designed for large heaps (>100GB).
+Performs almost non-noticeable pause times (~2ms).
+Uses region-based allocation with concurrent garbage collection.
+🔹 Enable ZGC
+
+bash
+Copy
+Edit
+java -XX:+UseZGC -jar app.jar
+🔹 How It Works
+
+Allocates memory in regions (instead of fixed generations).
+Uses colored pointers to track object reachability without stop-the-world events.
+Only pauses application threads for <2ms, regardless of heap size.
+✅ Best for large-scale applications like financial trading, real-time systems.
+✅ Available from Java 11, fully stable in Java 17+.
+
+🔹 Shenandoah GC (Best for Low-Pause, Real-Time Apps)
+Focuses on low-pause time GC.
+Uses concurrent compaction (so no stop-the-world for defragmentation).
+Works well for heap sizes up to 32GB.
+🔹 Enable Shenandoah GC
+
+bash
+Copy
+Edit
+java -XX:+UseShenandoahGC -jar app.jar
+🔹 How It Works
+
+Performs concurrent marking and compaction (so heap remains compact).
+Avoids stop-the-world pauses except in rare cases.
+Best for real-time applications needing consistent response times.
+✅ Best for UI applications, gaming, and JVM-based real-time systems.
+✅ Fully supported in Java 17+.
+
+3. GC Performance Comparison
+GC Type	Latency	Throughput	Heap Size Support	Use Case
+Serial GC	High	Low	Small (<1GB)	Simple desktop apps
+Parallel GC	Medium	High	Medium (1GB-10GB)	Batch processing
+G1 GC	Low	High	Medium to Large (2GB-50GB)	General-purpose
+ZGC	Ultra-low	Medium	Huge (50GB+)	Low-latency applications
+Shenandoah GC	Ultra-low	High	Medium to Large (1GB-32GB)	Real-time, UI apps
+4. How to Monitor GC Performance
+Use JVisualVM or JConsole to monitor GC behavior:
+
+bash
+Copy
+Edit
+jvisualvm
+Or analyze GC logs:
+
+bash
+Copy
+Edit
+java -Xlog:gc*:file=gc.log:time,uptime,level,tags -jar app.jar
+5. Conclusion
+For small apps, use Serial GC.
+For high throughput, use Parallel GC.
+For balanced performance, use G1 GC (default in Java 9+).
+For ultra-low latency, use ZGC or Shenandoah GC.
