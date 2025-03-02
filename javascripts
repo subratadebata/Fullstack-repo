@@ -1,1 +1,14 @@
+what is closures?
 
+In JavaScript, a closure is a function that can access variables from its outer function, even after the outer function has finished executing. Closures are created when a function is defined inside another function. 
+Lexical scope ?
+
+Lexical scope in JavaScript is a programming concept that determines the scope of a variable based on where it's declared in the code. It's also known as static scoping. 
+
+Event Loop and Asynchronous JavaScript
+JavaScript uses an event loop to handle asynchronous operations. The call stack, callback queue, and microtask queue work together to execute synchronous and asynchronous code.
+
+Execution Process:
+Synchronous code executes first (Call Stack).
+Promises and async/await go into the Microtask Queue (higher priority than Callback Queue).
+Callbacks from events, timers, or async operations go into the Callback Queue.
