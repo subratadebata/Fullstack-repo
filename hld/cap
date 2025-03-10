@@ -1,0 +1,54 @@
+CAP Theorem (Consistency, Availability, Partition Tolerance)
+📌 Definition
+CAP theorem states that in a distributed system, you can achieve only two out of three guarantees at any given time:
+1️⃣ Consistency (C) – Every node has the same data at the same time.
+2️⃣ Availability (A) – Every request receives a response, even if some nodes are down.
+3️⃣ Partition Tolerance (P) – The system continues to function even if network partitions occur (nodes can’t communicate).
+
+👉 It is impossible to achieve all three (C, A, P) simultaneously in a distributed system.
+
+🔹 Understanding CAP Theorem with Real-World Analogy
+Imagine an online banking system:
+
+Consistency (C): Every user sees the same account balance across devices.
+Availability (A): Users can access their accounts 24/7.
+Partition Tolerance (P): The system keeps working even if some data centers lose connection.
+If a network partition (P) occurs, we have two choices:
+
+CP (Consistency + Partition Tolerance) → Ensure data consistency but some requests may fail.
+AP (Availability + Partition Tolerance) → Ensure responses but data may be inconsistent.
+📌 CAP Combinations in Distributed Systems
+CAP Model	Guarantees	Sacrifices	Example Systems
+CP (Consistency + Partition Tolerance)	Strong consistency, survives network failures	Some requests may be rejected (not always available)	MongoDB (with strong consistency), HBase, Zookeeper
+AP (Availability + Partition Tolerance)	Always responds, survives network failures	Data may be inconsistent temporarily	DynamoDB, Cassandra, CouchDB
+CA (Consistency + Availability) ❌ (Not Possible)	Both consistency & availability	Can’t handle network partitions	Theoretical Only – Works in a single-node DB
+💡 Note: CA is not practical for distributed systems because network partitions always happen in real-world scenarios.
+
+🔹 CAP Theorem in Action (Trade-offs in Databases)
+📍 SQL Databases (MySQL, PostgreSQL, etc.) → CP
+
+Prioritizes strong consistency over availability.
+In case of a failure, some requests might be rejected.
+📍 NoSQL Databases (Cassandra, DynamoDB, etc.) → AP
+
+Prioritizes availability over strict consistency.
+Uses eventual consistency (data syncs over time).
+📍 Zookeeper → CP
+
+Ensures a strongly consistent system but may deny requests when partitions occur.
+🚀 Example Scenario: CAP Theorem in a Shopping App
+Imagine an e-commerce site handling inventory updates across multiple servers:
+
+1️⃣ CP (Consistency + Partition Tolerance)
+
+If a network failure happens, some customers may not be able to purchase items until data is consistent.
+Example: Relational databases used in banking.
+2️⃣ AP (Availability + Partition Tolerance)
+
+Customers can continue buying items, but inventory counts might be slightly inconsistent.
+Example: Amazon DynamoDB allowing high availability but using eventual consistency.
+🛠️ Practical Considerations for Architects
+If accuracy is critical (e.g., banking transactions) → Choose CP.
+If availability is more important (e.g., social media posts, shopping carts) → Choose AP.
+No system is strictly CP or AP; many databases provide tunable consistency levels (e.g., DynamoDB, Cassandra).
+Would you like a diagram explaining CAP Theorem visually? 🚀
