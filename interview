@@ -1,0 +1,65 @@
+🔵 Core Java & OOP
+What is the difference between == and .equals() in Java?
+Explain method overloading vs. overriding with examples.
+What are the access modifiers in Java?
+How does the static keyword work?
+What is the final keyword? How is it used for variables, methods, and classes?
+What are autoboxing and unboxing?
+What is the super() keyword used for?
+What is a constructor? Can a constructor be private?
+Difference between abstract classes and interfaces (pre-Java 8 vs. post-Java 8).
+What is a singleton class? Write a thread-safe singleton.
+
+🛠️ Exception Handling
+Difference between throw, throws, and try-catch-finally.
+What is a NullPointerException? How do you avoid it?
+Explain try-with-resources (Java 7+).
+What are checked vs. unchecked exceptions?
+How to create a custom exception?
+
+📚 Collections Framework
+Difference between ArrayList and LinkedList.
+How does a HashMap work internally?
+What is the difference between HashSet and TreeSet?
+How to sort a List of custom objects?
+What is ConcurrentModificationException? How to avoid it?
+Difference between Iterator and ListIterator.
+When to use Hashtable vs. ConcurrentHashMap?
+
+🧩 Strings & Wrapper Classes
+Why are strings immutable in Java?
+Difference between String, StringBuilder, and StringBuffer.
+How to reverse a string without using reverse()?
+Write code to check if a string is a palindrome.
+How to convert a string to an integer without using Integer.parseInt()?
+
+⚡ Multithreading
+What is the volatile keyword?
+Difference between Runnable and Thread.
+What is the synchronized keyword?
+Explain the wait(), notify(), and notifyAll() methods.
+What is a deadlock? How to prevent it?
+
+🔌 Selenium & Java Integration
+How do you handle dynamic elements in Selenium using Java?
+Write code to read data from an Excel file in Java for data-driven testing.
+How to handle dropdowns using the Select class in Java?
+What is the Actions class in Selenium? Give an example.
+How to take a screenshot in Selenium using Java?
+Explain the use of WebDriverWait with Java.
+
+💡 Coding Challenges
+Find duplicates in an array.
+Print the Fibonacci series up to N terms.
+Check if two strings are anagrams.
+Reverse a linked list.
+Find the second-largest number in an array.
+Count the occurrence of a character in a string.
+Write a program to print prime numbers up to N.
+
+⚡Scenario-Based QA Questions:
+How would you read test data from a JSON file in Java?
+How to handle a StaleElementReferenceException in Selenium?
+What design patterns (e.g., Page Object Model) have you used in Java-based frameworks?
+How to generate random test data (emails, phone numbers) in Java?
+How to integrate Maven with your Java automation framework?
