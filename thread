@@ -1,0 +1,115 @@
+how many way we can create thread in java latest version
+In the latest version of Java (Java 21), there are several ways to create and manage threads. Here are the main approaches:
+
+1️⃣ Using Thread Class (Extending Thread)
+java
+Copy
+Edit
+class MyThread extends Thread {
+    @Override
+    public void run() {
+        System.out.println("Thread running using Thread class");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        MyThread thread = new MyThread();
+        thread.start();
+    }
+}
+2️⃣ Using Runnable Interface (Implementing Runnable)
+java
+Copy
+Edit
+class MyRunnable implements Runnable {
+    @Override
+    public void run() {
+        System.out.println("Thread running using Runnable interface");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Thread thread = new Thread(new MyRunnable());
+        thread.start();
+    }
+}
+3️⃣ Using ExecutorService (Thread Pool)
+java
+Copy
+Edit
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+public class Main {
+    public static void main(String[] args) {
+        ExecutorService executor = Executors.newFixedThreadPool(2);
+        executor.submit(() -> System.out.println("Thread running using ExecutorService"));
+        executor.shutdown();
+    }
+}
+4️⃣ Using Callable with ExecutorService (Returning a Value)
+java
+Copy
+Edit
+import java.util.concurrent.*;
+
+public class Main {
+    public static void main(String[] args) throws Exception {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Callable<String> task = () -> "Thread running using Callable";
+        Future<String> future = executor.submit(task);
+        System.out.println(future.get());
+        executor.shutdown();
+    }
+}
+5️⃣ Using ForkJoinPool (Parallel Computing)
+java
+Copy
+Edit
+import java.util.concurrent.RecursiveTask;
+import java.util.concurrent.ForkJoinPool;
+
+class MyTask extends RecursiveTask<Integer> {
+    @Override
+    protected Integer compute() {
+        System.out.println("Thread running using ForkJoinPool");
+        return 42;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        ForkJoinPool pool = new ForkJoinPool();
+        MyTask task = new MyTask();
+        System.out.println(pool.invoke(task));
+        pool.shutdown();
+    }
+}
+6️⃣ Using Virtual Threads (Java 19+ - Project Loom)
+Virtual threads are lightweight threads introduced in Java 19 and stabilized in Java 21.
+
+java
+Copy
+Edit
+public class Main {
+    public static void main(String[] args) {
+        Thread.startVirtualThread(() -> System.out.println("Thread running using Virtual Threads"));
+    }
+}
+OR using Executors.newVirtualThreadPerTaskExecutor():
+
+java
+Copy
+Edit
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+public class Main {
+    public static void main(String[] args) {
+        try (ExecutorService executor = Executors.newVirtualThreadPerTaskExecutor()) {
+            executor.submit(() -> System.out.println("Thread running using Virtual Thread Executor"));
+        }
+    }
+}
