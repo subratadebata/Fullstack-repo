@@ -1,0 +1,60 @@
+✅ DSA: No matter the company, the 1st and 2nd rounds were mostly DSA
+
+- Arrays
+- LinkedList
+- Binary Search
+- Graphs
+- Stacks
+- Queues
+- DP
+
+✅ Low-Level Design: This could be your 3rd/4th round of interview
+
+- OOPS concepts
+- SOLID principles
+- Design Patterns (Mostly - Singleton, Factory, Strategy etc)
+- Class/UML diagram
+
+✅ High-level design
+
+- Load Balancers (L4 and L7)
+- API Gateway
+- Authentication and Authorisation
+- Caching
+- Scaling
+- DB choices - SQL / NoSql
+- Microservice architecture
+- Rate limiting - DDoS attacks
+- Sharding/Partitioning
+- CAP theorem
+- Consistent hashing
+
+✅ Java internals
+
+- Internal functioning of a hashmap in depth
+- Comparator and comparable with code
+- Difference between hashmap, hashTable and concurrent hashmap
+- Streams API / Lambda function / Method references
+- Mutable and immutable classes and their differences
+- Multithreading - Synchronisation/Locks/Producer-consumer problem
+- Volatile/Atomic/Transient
+- Garbage collector
+- JVM/JRE/JDK
+
+✅ ReactJs/Javascript
+
+- Closures
+- Event Bubbling & Event Capturing
+- Hoisting
+- Difference between var,let and const
+- Callback functions
+- Promises
+- Local storage/ session storage
+- React lifecycle methods
+- Hooks - useState, useEffects etc
+- Redux - slice, reducer, actions etc
+- Real and virtual DOM
+
+The list goes on and on and it's not even half of the questions being asked to me.
+
+Next time you get influenced by a reel to enter tech, remember this is all what's lying ahead of you and not just your office' free food and cab.
